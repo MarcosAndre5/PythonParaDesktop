@@ -1,6 +1,6 @@
 # -*- coding:UTF-8 -*-
 from tkinter import *
-from frontend import *
+from produtos import *
 
 class Sistema:
     #####################
@@ -13,6 +13,7 @@ class Sistema:
 
         janela.title('Tela de Login')
         self.titulo = Label(janela, text='Tela de Login do Sistema')
+        self.titulo["font"] = ("Arial", "10", "bold")
         self.usuario = Label(janela, text='Login: ')
         self.senha = Label(janela, text='Senha: ')
         self.entradaUsuario = Entry(janela)
@@ -21,12 +22,12 @@ class Sistema:
         self.status = Label(janela, text='')
 
         self.titulo.grid(row=0, column=1, pady=10)
-        self.usuario.grid(row=1, column=0)
-        self.senha.grid(row=2, column=0)
-        self.entradaUsuario.grid(row=1, column=1, pady=10)
-        self.entradaSenha.grid(row=2, column=1, pady=10)
-        self.entrar.grid(row=3, column=1)
-        self.status.grid(row=4, column=1, pady=20)
+        self.usuario.grid(row=1, column=0, pady=10)
+        self.senha.grid(row=2, column=0,  pady=10)
+        self.entradaUsuario.grid(row=1, column=1)
+        self.entradaSenha.grid(row=2, column=1)
+        self.entrar.grid(row=3, column=1, pady=10)
+        self.status.grid(row=4, column=1)
 
     def JanelaPrincipal(self):
         janela = Tk()
@@ -39,24 +40,22 @@ class Sistema:
         filemenu.add_command(label="Saida de Produtos",)
         filemenu.add_command(label="Entrada de Produtos",)
         filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=root.quit)
+        filemenu.add_command(label="Sair", command=root.quit)
+
         janela.geometry('1000x500+0+0')
 
     def Cadastrar(self):
         janela = Tk()
         janela.title('Cadastrar')
+
         nome = Label(janela, text='Nome: ')
         nomeProd = Entry(janela)
         qtdNovo = Label(janela, text='Quantidade Comprada: ')
         qtdNovoProd = Entry(janela)
         qtdMinima = Label(janela, text='Quantidade Mínima no estoque: ')
         qtdMinimaProd = Entry(janela)
-        cadastrar = Button(janela, text='Cadastrar', command=self.cadastrarProd)
+        cadastrar = Button(janela, text='Cadastrar', command=self.inserirUsuario)
         voltar = Button(janela, text='Voltar', command=janela.destroy)
-
-        nomeCadastrada = Label(janela, text='')
-        qtdNovoCadastrada = Label(janela, text='')
-        qtdMinimaCadastrada = Label(janela, text='')
 
         nome.grid(row=0, column=0, pady=10)
         nomeProd.grid(row=0, column=1)
@@ -66,10 +65,6 @@ class Sistema:
         qtdMinimaProd.grid(row=2, column=1)
         cadastrar.grid(row=3, column=1, pady=10)
         voltar.grid(row=3, column=2, pady=10)
-
-        nomeCadastrada.grid(row=4, column=0)
-        qtdNovoCadastrada.grid(row=4, column=1)
-        qtdMinimaCadastrada.grid(row=4, column=2)
 
         janela.geometry('1000x500+0+0')
 
@@ -81,21 +76,28 @@ class Sistema:
         senha = ''
         if self.entradaUsuario.get() == login and self.entradaSenha.get() == senha:
             self.JanelaPrincipal()
-            self.caixa.destroy()
-
             self.status['text'] = 'Logado'
             self.status['bg'] = 'green'
         else:
             self.status['text'] = 'Dados Inválidos'
             self.status['bg'] = 'red'
 
-    def cadastrarProd(self):
-        self.nomeCadastrada['text'] = self.nomeProd.get()
-        self.qtdNovoCadastrada['text'] = self.qtdNovoProd.get()
-        self.qtdMinimaCadastrada['text'] = self.qtdMinimaProd.get()
+    def inserirUsuario(self):
+        produto = Produtos()
+
+        produto.nome = self.nomeProd.get()
+        produto.qtd = self.qtdNovoProd.get()
+        produto.qtdminima = self.qtdMinimaProd.get()
+
+        self.lblmsg["text"] = produto.insertProd()
+
+        self.iduproduto.delete(0, END)
+        self.nome.delete(0, END)
+        self.qtd.delete(0, END)
+        self.qtdminima.delete(0, END)
 
 
 root = Tk()
 Sistema(root)
-root.geometry('300x200')
+root.geometry('250x200+525+225')
 root.mainloop()
