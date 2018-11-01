@@ -1,5 +1,6 @@
 # -*- coding:UTF-8 -*-
 from tkinter import *
+from frontend import *
 
 class Sistema:
     #####################
@@ -29,18 +30,16 @@ class Sistema:
 
     def JanelaPrincipal(self):
         janela = Tk()
-
         janela.title('Sistema de Estoque')
-        menu1 = Button(janela, text='Cadastrar Produto', command=self.Cadastrar)
-        menu2 = Button(janela, text='Saída de Produto')
-        menu3 = Button(janela, text='Estoque')
-        sair = Button(janela, text='Sair do Sistema', command=self.sair)
-
-        menu1.grid(row=0, column=0)
-        menu2.grid(row=0, column=1)
-        menu3.grid(row=0, column=2)
-        sair.grid(row=0, column=3)
-
+        menu = Menu(janela)
+        janela.config(menu=menu)
+        filemenu = Menu(menu)
+        menu.add_cascade(label="Produtos", menu=filemenu)
+        filemenu.add_command(label="Cadastrar Novo", command=self.Cadastrar)
+        filemenu.add_command(label="Saida de Produtos",)
+        filemenu.add_command(label="Entrada de Produtos",)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=root.quit)
         janela.geometry('1000x500+0+0')
 
     def Cadastrar(self):
@@ -53,7 +52,7 @@ class Sistema:
         qtdMinima = Label(janela, text='Quantidade Mínima no estoque: ')
         qtdMinimaProd = Entry(janela)
         cadastrar = Button(janela, text='Cadastrar', command=self.cadastrarProd)
-        voltar = Button(janela, text='Voltar', command=self.voltar)
+        voltar = Button(janela, text='Voltar', command=janela.destroy)
 
         nomeCadastrada = Label(janela, text='')
         qtdNovoCadastrada = Label(janela, text='')
@@ -82,17 +81,13 @@ class Sistema:
         senha = ''
         if self.entradaUsuario.get() == login and self.entradaSenha.get() == senha:
             self.JanelaPrincipal()
+            self.caixa.destroy()
+
             self.status['text'] = 'Logado'
             self.status['bg'] = 'green'
         else:
             self.status['text'] = 'Dados Inválidos'
             self.status['bg'] = 'red'
-
-    def sair(self):
-        exit()
-
-    def voltar(self):
-        self.destroy()
 
     def cadastrarProd(self):
         self.nomeCadastrada['text'] = self.nomeProd.get()
