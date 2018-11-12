@@ -7,10 +7,13 @@ class Banco():
 
     def createTable(self):
         c = self.conexao.cursor()
+
         c.execute("""create table if not exists usuarios (
-                     idproduto integer primary key autoincrement ,
+                     idusuario integer primary key autoincrement ,
                      nome text,
-                     qtd integer,
-                     qtdmin integer)""")
+                     telefone text,
+                     email text,
+                     usuario text,
+                     senha text)""")
         self.conexao.commit()
         c.close()
